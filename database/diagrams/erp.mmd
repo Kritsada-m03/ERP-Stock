@@ -1,0 +1,16 @@
+erDiagram
+    ProductCategories ||--o{ Products : contains
+    Products ||--o{ Stocks : stocked
+    Warehouses ||--o{ Stocks : stores
+    Stocks ||--o{ StockTransactions : records
+    Customers ||--o{ SalesOrders : buys
+    Warehouses ||--o{ SalesOrders : fulfills
+    Users ||--o{ SalesOrders : creates
+    SalesOrders ||--o{ SalesOrderItems : contains
+    Products ||--o{ SalesOrderItems : sold
+    SalesOrders ||--o{ Payments : requests
+    Payments ||--o| Receipts : confirms
+    SalesOrders ||--o| Receipts : receipt
+    SalesOrders ||--o| Deliveries : ships
+    Deliveries ||--o{ StockTransactions : deducts
+    Users ||--o{ StockTransactions : performs

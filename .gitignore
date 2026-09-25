@@ -1,0 +1,37 @@
+# .NET / IDE
+**/bin/
+**/obj/
+.vs/
+*.user
+*.suo
+TestResults/
+coverage/
+
+# Angular / Node
+**/node_modules/
+**/dist/
+**/.angular/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+**/appsettings.Local.json
+**/appsettings.*.Local.json
+**/secrets.json
+
+# Local business data and database files
+**/.local-data/
+*.mdf
+*.ldf
+*.ndf
+*.bak
+*.bacpac
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
