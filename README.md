@@ -7,7 +7,7 @@
 
 - backend: solution 4 projects ที่ build ได้, Entities 12 ตัว, EF Core mappings, Repository และ UnitOfWork
 - API: มี GET /api/system/health เท่านั้น ยังไม่เปิด endpoint ทำธุรกรรมหรือ authentication
-- frontend: Angular 21 พร้อม layout, เมนูและ routes ตามงาน โดยหน้าจอยังเป็น placeholder ที่ไม่รับทำรายการ
+- frontend: Angular 21 พร้อมหน้าสินค้า สต็อก ออเดอร์ รับเงินจำลอง ใบเสร็จและจัดส่ง โดยใช้ข้อมูลทดลองใน localStorage ยังไม่เชื่อม API/SQL Server
 - database: มี initial EF migration, SQL export และ ERD; ยังไม่ได้เชื่อมต่อหรือสร้างฐานข้อมูลบน SQL Server
 - ไม่รวม Docker หรือ deployment ในรอบนี้
 
