@@ -577,3 +577,40 @@ END;
 COMMIT;
 GO
 
+BEGIN TRANSACTION;
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260927104424_AddCustomerContactDetails'
+)
+BEGIN
+    ALTER TABLE [Customers] ADD [ContactName] nvarchar(200) NULL;
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260927104424_AddCustomerContactDetails'
+)
+BEGIN
+    ALTER TABLE [Customers] ADD [Notes] nvarchar(1000) NULL;
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260927104424_AddCustomerContactDetails'
+)
+BEGIN
+    ALTER TABLE [Customers] ADD [TaxId] nvarchar(13) NULL;
+END;
+
+IF NOT EXISTS (
+    SELECT * FROM [__EFMigrationsHistory]
+    WHERE [MigrationId] = N'20260927104424_AddCustomerContactDetails'
+)
+BEGIN
+    INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+    VALUES (N'20260927104424_AddCustomerContactDetails', N'10.0.11');
+END;
+
+COMMIT;
+GO
+

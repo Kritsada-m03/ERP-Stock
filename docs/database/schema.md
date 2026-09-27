@@ -13,7 +13,7 @@ database/migrations ใช้เก็บ SQL ที่ export จาก EF เ�
 | Warehouses | รหัสและชื่อคลัง |
 | Stocks | ProductId + WarehouseId แบบ unique, OnHandQuantity, ReservedQuantity |
 | StockTransactions | StockId, ประเภทรายการ, QuantityDelta, Order/Delivery, ผู้ทำ, เหตุผล, OperationKey unique |
-| Customers | รหัส ชื่อ ช่องทางติดต่อ และที่อยู่ |
+| Customers | รหัส ชื่อ/บริษัท ผู้ติดต่อ โทรศัพท์ อีเมล ที่อยู่ เลขผู้เสียภาษี หมายเหตุ และ IsActive |
 | SalesOrders | เลข order, ลูกค้า, คลัง, ผู้สร้าง, สถานะ, snapshot, ยอดเงิน |
 | SalesOrderItems | order, สินค้า, snapshot ชื่อ/หน่วย/ราคา, จำนวน, จำนวนจอง, ส่วนลด, ยอดรายการ |
 | Payments | order, เลขชำระ, ยอด THB, QR/reference, สถานะและผู้ตรวจรับเงิน |
@@ -25,6 +25,11 @@ database/migrations ใช้เก็บ SQL ที่ export จาก EF เ�
 เวลาเหตุการณ์เก็บ UTC; วันเอกสารใช้ DateOnly ตามวันธุรกิจที่กำหนดตอนออก
 เงินใช้ decimal(18,2), จำนวนใช้ decimal(18,3) และข้อความภาษาไทยใช้ nvarchar
 รุ่นนี้เก็บชื่อหน่วยใน Product และ snapshot ใน order item ตามชุด Entity 12 ตัวที่กำหนด
+
+Customers ใช้กับลูกค้าที่ซื้อสินค้า ส่วน Users ใช้กับเจ้าหน้าที่ผู้สร้างรายการ
+ที่อยู่ลูกค้าเก็บเป็นข้อความหนึ่งที่อยู่ใน Address (สูงสุด 1,000 ตัวอักษร); API บังคับกรอก แต่คอลัมน์ยัง nullable เพื่อรองรับข้อมูลเดิม
+ContactName (200), TaxId (13) และ Notes (1,000) เพิ่มด้วย AddCustomerContactDetails และเป็นข้อมูลไม่บังคับ
+เลขผู้เสียภาษีตรวจรูปแบบตัวเลข 13 หลัก ไม่ได้ตรวจสอบทะเบียนภาษีภายนอก
 
 ## เงื่อนไขที่มีใน mapping
 

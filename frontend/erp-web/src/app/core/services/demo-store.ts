@@ -1,6 +1,7 @@
 import { DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
-import { DemoState, OrderAction, OrderDraft, Product, SalesOrder, Stock } from '../../shared/models/erp.models';
+import { CustomerRecord, DemoState, OrderAction, OrderDraft, Product, SalesOrder, Stock } from '../../shared/models/erp.models';
 import { createDemoState } from './demo-seed';
+import { CustomerField, customerFieldError, customerFields } from '../../shared/validators/customer-validation';
 
 export const DEMO_STORAGE_KEY = 'erp-backoffice.demo.v1';
 const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T;
@@ -14,6 +15,7 @@ export class DemoStore {
   private readonly data = signal<DemoState>(this.load());
   readonly state = this.data.asReadonly();
   readonly products = computed(() => this.data().products);
+  readonly customers = computed(() => this.data().customers);
   readonly warehouses = computed(() => this.data().warehouses);
   readonly orders = computed(() => [...this.data().orders].reverse());
 
@@ -32,6 +34,9 @@ export class DemoStore {
       const data = JSON.parse(raw) as DemoState;
       const lists = ['categories', 'warehouses', 'products', 'stocks', 'transactions', 'orders', 'payments', 'receipts', 'deliveries'] as const;
       if (data.version !== 1 || !Number.isInteger(data.revision) || !lists.every(key => Array.isArray(data[key]))) throw new Error('format');
+      // Older demos have order snapshots but no customer directory. Keep those orders intact.
+      if (!Object.prototype.hasOwnProperty.call(data, 'customers')) data.customers = [];
+      if (!Array.isArray(data.customers)) throw new Error('format');
       return data;
     } catch {
       this.storageWarning.set('อ่านข้อมูลทดลองเดิมไม่ได้ กรุณาใช้ปุ่มเริ่มข้อมูลทดลองใหม่ ข้อมูลเดิมยังไม่ถูกเขียนทับ');
@@ -64,6 +69,7 @@ export class DemoStore {
   }
 
   product(id: string) { return this.data().products.find(p => p.id === id); }
+  customer(id: string) { return this.data().customers.find(c => c.id === id); }
   order(id: string) { return this.data().orders.find(o => o.id === id); }
   warehouseName(id: string) { return this.data().warehouses.find(w => w.id === id)?.name ?? 'ไม่พบคลัง'; }
   categoryName(id: string) { return this.data().categories.find(c => c.id === id)?.name ?? 'ไม่ระบุ'; }
@@ -72,6 +78,29 @@ export class DemoStore {
     return row ? qty(row.onHand - row.reserved) : 0;
   }
   totalAvailable(productId: string) { return qty(this.data().stocks.filter(s => s.productId === productId).reduce((sum, s) => sum + s.onHand - s.reserved, 0)); }
+
+  saveCustomer(input: Omit<CustomerRecord, 'id' | 'createdAt' | 'updatedAt'>, id?: string): string {
+    return this.change(state => {
+      const value = { ...input, code: input.code.trim().toUpperCase(), name: input.name.trim(),
+        contactName: input.contactName.trim(), phone: input.phone.trim(), email: input.email.trim(),
+        address: input.address.trim(), taxId: input.taxId.trim(), notes: input.notes.trim() };
+      for (const field of Object.keys(customerFields) as CustomerField[]) {
+        const error = customerFieldError(field, value[field]);
+        requireValue(!error, error);
+      }
+      requireValue(!state.customers.some(c => c.id !== id && c.code.toUpperCase() === value.code), 'รหัสลูกค้านี้มีอยู่แล้ว');
+      const now = new Date().toISOString();
+      if (id) {
+        const index = state.customers.findIndex(c => c.id === id);
+        requireValue(index >= 0, 'ไม่พบลูกค้า');
+        state.customers[index] = { ...state.customers[index], ...value, updatedAt: now };
+        return id;
+      }
+      const newId = crypto.randomUUID();
+      state.customers.push({ ...value, id: newId, createdAt: now });
+      return newId;
+    });
+  }
 
   saveProduct(input: Omit<Product, 'id'>, id?: string): string {
     return this.change(state => {
@@ -141,9 +170,12 @@ export class DemoStore {
   createOrder(draft: OrderDraft): string {
     return this.change(state => {
       requireValue(state.warehouses.some(w => w.id === draft.warehouseId), 'กรุณาเลือกคลัง');
+      if (draft.customerId) requireValue(state.customers.some(c => c.id === draft.customerId && c.active), 'ไม่พบลูกค้าหรือลูกค้าถูกปิดใช้งาน');
       const customer = { name: draft.customer.name.trim(), phone: draft.customer.phone.trim(), address: draft.customer.address.trim() };
-      requireValue(customer.name && customer.address, 'กรุณากรอกชื่อลูกค้าและที่อยู่จัดส่ง');
-      requireValue(customer.name.length <= 200 && customer.phone.length <= 30 && customer.address.length <= 1000, 'ข้อมูลลูกค้ายาวเกินกำหนด');
+      for (const field of ['name', 'phone', 'address'] as const) {
+        const error = customerFieldError(field, customer[field]);
+        requireValue(!error, error);
+      }
       requireValue(draft.items.length > 0 && draft.items.length <= 100, 'ออเดอร์ต้องมีสินค้า 1–100 รายการ');
       requireValue(new Set(draft.items.map(i => i.productId)).size === draft.items.length, 'สินค้าซ้ำ กรุณารวมจำนวนในรายการเดียว');
       const items = draft.items.map(item => {
@@ -156,7 +188,7 @@ export class DemoStore {
       requireValue(Number.isFinite(draft.discount) && draft.discount >= 0 && money(draft.discount) < subtotal, 'ส่วนลดต้องไม่ติดลบและยอดสุทธิต้องมากกว่า 0');
       const id = crypto.randomUUID();
       const now = new Date().toISOString();
-      state.orders.push({ id, number: this.number('SO', state.orders.length + 1), createdAt: now, warehouseId: draft.warehouseId, customer, items, subtotal, discount: money(draft.discount), total: money(subtotal - money(draft.discount)), status: 'Draft', timeline: [{ date: now, label: 'สร้างออเดอร์' }] });
+      state.orders.push({ id, number: this.number('SO', state.orders.length + 1), createdAt: now, warehouseId: draft.warehouseId, customerId: draft.customerId || undefined, customer, items, subtotal, discount: money(draft.discount), total: money(subtotal - money(draft.discount)), status: 'Draft', timeline: [{ date: now, label: 'สร้างออเดอร์' }] });
       return id;
     });
   }

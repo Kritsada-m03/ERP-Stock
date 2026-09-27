@@ -15,6 +15,9 @@ public sealed class CustomerConfiguration : EntityConfiguration<Customer>
         builder.Property(x => x.Phone).HasMaxLength(30);
         builder.Property(x => x.Email).HasMaxLength(254);
         builder.Property(x => x.Address).HasMaxLength(1000);
+        builder.Property(x => x.ContactName).HasMaxLength(200);
+        builder.Property(x => x.TaxId).HasMaxLength(13);
+        builder.Property(x => x.Notes).HasMaxLength(1000);
     }
 }
 

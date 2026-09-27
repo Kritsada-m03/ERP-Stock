@@ -9,7 +9,7 @@ describe('Demo workflow', () => {
     store = TestBed.inject(DemoStore);
   });
   afterEach(() => vi.restoreAllMocks());
-  const customer = { name: 'ลูกค้าทดสอบ', phone: '0000000000', address: 'ที่อยู่ทดลอง' };
+  const customer = { name: 'ลูกค้าทดสอบ', phone: '0812345678', address: 'ที่อยู่ทดลอง' };
   const create = (quantity = 2) => store.createOrder({ warehouseId: 'w1', customer, items: [{ productId: 'p1', quantity }], discount: 0 });
   const confirm = (id: string) => { store.orderAction(id, 'check'); store.orderAction(id, 'confirm'); };
   const pay = (id: string, reference = 'DEMO-001') => {

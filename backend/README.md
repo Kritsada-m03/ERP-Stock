@@ -35,7 +35,9 @@ interface ของ repo อยู่ใน Application/Interfaces ส่วน 
 DbContext และ UnitOfWork อยู่ใน Infrastructure/Data; mappings อยู่ใน Configurations
 
 ตัวอย่างที่มีโค้ดแล้ว: ProductService → IProductRepository → ProductRepository → ErpDbContext
-มี IRepository<TEntity> สำหรับอ่าน/เพิ่ม และ repositories เฉพาะสินค้า ออเดอร์ และสต็อก โดยยังไม่มี generic delete หรือ endpoint CRUD
+มี IRepository<TEntity> สำหรับอ่าน/เพิ่ม และ repositories เฉพาะลูกค้า สินค้า ออเดอร์ และสต็อก โดยยังไม่มี generic delete
+CustomersController → CustomerService → CustomerRepository รองรับค้นหา เพิ่ม และแก้ไขลูกค้ารวมที่อยู่ ดู [API ลูกค้า](../docs/api/customers.md)
+การปิดใช้งานใช้ IsActive=false แทนการลบ เพื่อรักษาข้อมูลอ้างอิงจากออเดอร์; การแก้ไขต้องส่ง RowVersion ล่าสุด
 UnitOfWork รองรับ transaction ร่วมกับ DbContext เดียวกัน แต่ handlers ของ flow ธุรกิจยังไม่ได้พัฒนา
 
 dependency: API → Application → Domain และ Infrastructure → Application/Domain
@@ -44,6 +46,7 @@ API อ้างอิง Infrastructure เพิ่มเฉพาะสำห
 รันจาก repository root:
 ```powershell
 dotnet build backend/ERP.Backend/ERP.Backend.slnx
+dotnet test backend/ERP.Backend/ERP.Backend.slnx
 dotnet run --project backend/ERP.Backend/ERP.API
 ```
 

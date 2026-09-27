@@ -13,6 +13,7 @@ export function createDemoState(): DemoState {
   const quantities = [120, 38, 240, 8, 64, 6];
   return {
     version: 1, revision: 0,
+    customers: [],
     categories: [{ id: 'c1', name: 'เครื่องเขียน' }, { id: 'c2', name: 'บรรจุภัณฑ์' }, { id: 'c3', name: 'ของใช้ทั่วไป' }],
     warehouses: [{ id: 'w1', code: 'MAIN', name: 'คลังหลัก' }, { id: 'w2', code: 'BRANCH', name: 'คลังสาขา' }],
     products,

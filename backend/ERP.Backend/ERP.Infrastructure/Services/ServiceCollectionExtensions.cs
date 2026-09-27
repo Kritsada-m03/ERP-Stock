@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
         services.AddDbContext<ErpDbContext>(options => options.UseSqlServer(connectionString));
         services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
         services.AddScoped<IProductRepository, ProductRepository>();
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
         services.AddScoped<ISalesOrderRepository, SalesOrderRepository>();
         services.AddScoped<IStockRepository, StockRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();

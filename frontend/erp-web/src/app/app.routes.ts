@@ -7,6 +7,10 @@ export const routes: Routes = [
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
       { path: 'dashboard', loadComponent: () => import('./features/dashboard/dashboard').then(m => m.Dashboard) },
+      { path: 'customers', loadComponent: () => import('./features/customers/customer-list/customer-list').then(m => m.CustomerList) },
+      { path: 'customers/new', loadComponent: () => import('./features/customers/customer-form/customer-form').then(m => m.CustomerForm) },
+      { path: 'customers/:id/edit', loadComponent: () => import('./features/customers/customer-form/customer-form').then(m => m.CustomerForm) },
+      { path: 'customers/:id', loadComponent: () => import('./features/customers/customer-detail/customer-detail').then(m => m.CustomerDetail) },
       { path: 'products', loadComponent: () => import('./features/products/product-list/product-list').then(m => m.ProductList) },
       { path: 'products/new', loadComponent: () => import('./features/products/product-form/product-form').then(m => m.ProductForm) },
       { path: 'products/:id/edit', loadComponent: () => import('./features/products/product-form/product-form').then(m => m.ProductForm) },

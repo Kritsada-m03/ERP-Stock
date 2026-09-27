@@ -14,7 +14,7 @@ describe('Backoffice routes', () => {
     await harness.navigateByUrl('/');
     expect(TestBed.inject(Router).url).toBe('/dashboard');
     expect(harness.routeNativeElement?.querySelector('h1')?.textContent).toBe('ภาพรวมการดำเนินงาน');
-    expect(harness.routeNativeElement?.querySelectorAll('nav a').length).toBe(7);
+    expect(harness.routeNativeElement?.querySelector('nav a[href="/customers"]')?.textContent).toContain('ลูกค้า');
   });
 
   it('matches the new-product page before the product detail route', async () => {

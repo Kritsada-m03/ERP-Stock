@@ -9,6 +9,9 @@ public sealed class Customer : Entity
     public string? Phone { get; set; }
     public string? Email { get; set; }
     public string? Address { get; set; }
+    public string? ContactName { get; set; }
+    public string? TaxId { get; set; }
+    public string? Notes { get; set; }
     public bool IsActive { get; set; } = true;
 }
 

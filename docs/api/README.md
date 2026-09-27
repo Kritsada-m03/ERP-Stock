@@ -9,7 +9,8 @@ GET http://localhost:5080/api/system/health
 ```
 
 ใช้ตรวจว่า process/API ทำงาน ไม่ใช่ SQL Server health check
-ยังไม่มี authentication และไม่มี business endpoint ที่เปิดให้อ่าน/เขียนข้อมูล
+มี API ลูกค้าสำหรับค้นหา/อ่าน/เพิ่ม/แก้ไขที่ `/api/customers` ดู [สัญญา API ลูกค้า](customers.md)
+ยังไม่มี authentication; API ลูกค้าต้องตั้งค่า connection string และ apply migrations ก่อนใช้กับ SQL Server
 Frontend dev proxy ส่ง /api ไป port 5080
 
 ## Endpoint ที่วางแผนไว้

@@ -11,6 +11,7 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 export class Sidebar {
   readonly items = [
     { path: '/dashboard', label: 'ภาพรวม', icon: '◫' }, { path: '/products', label: 'สินค้า', icon: '▦' },
+    { path: '/customers', label: 'ลูกค้า', icon: '♙' },
     { path: '/inventory', label: 'สต็อก / คลังสินค้า', icon: '▥' }, { path: '/orders', label: 'Sales Order', icon: '▤' },
     { path: '/payments', label: 'การชำระเงิน', icon: '฿' }, { path: '/receipts', label: 'ใบเสร็จ', icon: '▧' },
     { path: '/deliveries', label: 'การจัดส่ง', icon: '⇢' },
