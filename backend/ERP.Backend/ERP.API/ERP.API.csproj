@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
   <PropertyGroup><UserSecretsId>erp-backoffice-local-development</UserSecretsId></PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="../ERP.BankIntegration/ERP.BankIntegration.csproj" />
     <ProjectReference Include="../ERP.Application/ERP.Application.csproj" />
     <ProjectReference Include="../ERP.Infrastructure/ERP.Infrastructure.csproj" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.11">

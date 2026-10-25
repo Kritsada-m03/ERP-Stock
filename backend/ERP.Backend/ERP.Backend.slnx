@@ -1,5 +1,7 @@
 <Solution>
   <Project Path="ERP.API/ERP.API.csproj" />
+  <Project Path="ERP.BankIntegration/ERP.BankIntegration.csproj" />
+  <Project Path="ERP.BankIntegration.Tests/ERP.BankIntegration.Tests.csproj" />
   <Project Path="ERP.Application/ERP.Application.csproj" />
   <Project Path="ERP.Application.Tests/ERP.Application.Tests.csproj" />
   <Project Path="ERP.Domain/ERP.Domain.csproj" />

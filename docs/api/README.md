@@ -13,6 +13,9 @@ GET http://localhost:5080/api/system/health
 ยังไม่มี authentication; API ลูกค้าต้องตั้งค่า connection string และ apply migrations ก่อนใช้กับ SQL Server
 Frontend dev proxy ส่ง /api ไป port 5080
 
+มี [API รับ–ส่งธนาคารจำลอง](banking.md) แยกที่ `/api/banking/payments` และ `/api/banking/callbacks`
+เปิดเฉพาะ Development ใช้ memory และไม่เปลี่ยนสถานะการชำระเงินของ ERP
+
 ## Endpoint ที่วางแผนไว้
 
 | กลุ่ม | ตัวอย่างเส้นทางในอนาคต |

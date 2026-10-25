@@ -5,8 +5,8 @@
 
 ## สถานะปัจจุบัน
 
-- backend: 4 application projects และโปรเจกต์ทดสอบ, Entities 12 ตัว, EF Core mappings, Repository และ UnitOfWork
-- API: มี GET /api/system/health และ API ค้นหา/เพิ่ม/แก้ไขลูกค้า /api/customers; ยังไม่มี authentication
+- backend: 4 projects หลัก ERP พร้อมโมดูล ERP.BankIntegration แยกต่างหาก และ 2 โปรเจกต์ทดสอบ, Entities 12 ตัว, EF Core mappings, Repository และ UnitOfWork
+- API: มี GET /api/system/health, API ลูกค้า /api/customers และ [โมดูลรับ–ส่งธนาคารจำลอง](docs/api/banking.md) /api/banking; ยังไม่มีระบบ login เจ้าหน้าที่
 - frontend: Angular 21 พร้อมหน้าลูกค้า สินค้า สต็อก ออเดอร์ รับเงินจำลอง ใบเสร็จและจัดส่ง โดยใช้ข้อมูลทดลองใน localStorage ยังไม่เชื่อม API/SQL Server
 - database: มี InitialCreate และ AddCustomerContactDetails migrations พร้อม SQL export และ ERD; ยังไม่ได้เชื่อมต่อหรือสร้างฐานข้อมูลบน SQL Server
 - ไม่รวม Docker หรือ deployment ในรอบนี้
@@ -19,6 +19,8 @@ ERP-Stock/
 │   ├── ERP.Backend.slnx
 │   ├── ERP.API/
 │   ├── ERP.Application/
+│   ├── ERP.BankIntegration/
+│   ├── ERP.BankIntegration.Tests/
 │   ├── ERP.Domain/
 │   └── ERP.Infrastructure/
 ├── frontend/erp-web/

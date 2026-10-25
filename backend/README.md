@@ -51,3 +51,10 @@ dotnet run --project backend/ERP.Backend/ERP.API
 ```
 
 ดู [การตั้งค่าเครื่องและฐานข้อมูล](../docs/requirements/local-development.md)
+
+โมดูลรับ–ส่งข้อมูลธนาคารแยกอยู่ใน [ERP.BankIntegration](ERP.Backend/ERP.BankIntegration/README.md)
+ค่าเริ่มต้น Mock ไม่มีธุรกรรมจริง และไม่มี dependency กลับไปยัง code ธุรกิจ ERP
+API หลักประกอบโมดูลผ่าน AddBankIntegration; tests อยู่ที่ ERP.BankIntegration.Tests
+
+แพ็กเกจ System.Security.Cryptography.Pkcs ถูก pin เป็น 9.0.21 เพื่อแก้ NuGet audit ที่ขัดขวาง build จาก dependency ของ SqlClient
+ตาม [ประกาศ Microsoft](https://github.com/dotnet/runtime/security/advisories/GHSA-846f-f764-76mx)
